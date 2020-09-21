@@ -16,9 +16,9 @@ exports.pregunta_nueva = function (req, res) {
         pregunta.save(function (err) {
             if (err) {
                 console.log(err);
-                res.json({data:"Error"});    
+                res.json({data:"Error"});
             }
-        res.json({data:"Pregunta agregada con éxito"});    
+        res.json({data:"Pregunta agregada con éxito"});
         })
 };
 
@@ -27,8 +27,8 @@ exports.pregunta_listado = function (req, res) {
     Pregunta.find({}, function(err, preguntas) {
       if (err) {
         console.log(err);
-            res.send('Error no hay preguntas');
+            res.json({data:'Error no hay preguntas'});
       }
-         res.send(preguntas);
+         res.json({data:preguntas});
       });
 };
