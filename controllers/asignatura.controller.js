@@ -27,9 +27,9 @@ exports.asignatura_nueva = function (req, res) {
         asignatura.save(function (err) {
             if (err) {
                 console.log(err);
-                res.send('Error');
+                res.json({data:'Error'});
             }
-        res.send('Asignatura agregada con éxito');
+        res.json({data:'Asignatura agregada con éxito'});
 
         })
 };
@@ -46,9 +46,9 @@ exports.asignatura_nuevaPrevia = function (req, res) {
         previa.save(function (err) {
             if (err) {
                 console.log(err);
-                res.send('Error');
+                res.json({data:'Error'});
             }
-        res.send('Previa agregada con éxito');
+        res.json({data:'Previa agregada con éxito'});
 
         })
 };
@@ -68,9 +68,9 @@ exports.asignatura_nuevoHorario = function (req, res) {
         horario.save(function (err) {
             if (err) {
                 console.log(err);
-                res.send('Error');
+                res.json({data:'Error'});
             }
-        res.send('Horario agregado con éxito');
+        res.json({data:'Horario agregado con éxito'});
 
         })
 };
@@ -88,9 +88,9 @@ exports.asignatura_nuevaEvaluacion = function (req, res) {
         evaluacion.save(function (err) {
             if (err) {
                 console.log(err);
-                res.send('Error');
+                res.json({data:'Error'});
             }
-        res.send('Evaluacion agregada con éxito');
+        res.json({data:'Evaluacion agregada con éxito'});
 
         })
 };
@@ -106,9 +106,9 @@ exports.asignatura_nuevoParcial = function (req, res) {
         parcial.save(function (err) {
             if (err) {
                 console.log(err);
-                res.send('Error');
+                res.json({data:'Error'});
             }
-        res.send('Parcial agregado con éxito');
+        res.json({data:'Parcial agregado con éxito'});
 
         })
 };
@@ -124,9 +124,9 @@ exports.asignatura_nuevoExamen = function (req, res) {
         examen.save(function (err) {
             if (err) {
                 console.log(err);
-                res.send('Error');
+                res.json({data:'Error'});
             }
-        res.send('Examen agregado con éxito');
+        res.json({data:'Examen agregado con éxito'});
 
         })
 };
@@ -144,9 +144,9 @@ exports.asignatura_nuevoLaboratorio = function (req, res) {
         laboratorio.save(function (err) {
             if (err) {
                 console.log(err);
-                res.send('Error');
+                res.json({data:'Error'});
             }
-        res.send('Laboratorio agregado con éxito');
+        res.json({data:'Laboratorio agregado con éxito'});
 
         })
 };

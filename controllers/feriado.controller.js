@@ -15,9 +15,9 @@ exports.feriado_nuevo = function (req, res) {
         feriado.save(function (err) {
             if (err) {
                 console.log(err);
-                res.send('Error');
+                res.json({data:'Error'});
             }
-        res.send('Feriado agregado con éxito');
+        res.json({data:'Feriado agregado con éxito'});
 
         })
 };

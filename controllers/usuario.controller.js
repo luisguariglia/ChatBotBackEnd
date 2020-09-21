@@ -19,9 +19,9 @@ exports.usuario_nuevo = function (req, res) {
         usuario.save(function (err) {
             if (err) {
                 console.log(err);
-                res.send('Error');
+                res.json({data:'Error'});
             }
-        res.send('Usuario agregado con éxito');
+        res.json({data:'Usuario agregado con éxito'});
 
         })
 };
@@ -38,9 +38,9 @@ exports.usuarioAsignatura_nuevo = function (req, res) {
         usuarioAsignatura.save(function (err) {
             if (err) {
                 console.log(err);
-                res.send('Error');
+                res.json({data:'Error'});
             }
-        res.send('usuarioAsignatura agregado con éxito');
+        res.json({data:'usuarioAsignatura agregado con éxito'});
 
         })
 };

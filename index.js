@@ -10,7 +10,6 @@ var cors = require('cors')
 // Importar las rutas de los productos
 const app = express();
 
-
 // Conexion a mongo
 var mongoose = require('mongoose');
 var dev_db_url = 'mongodb://localhost:27017/tipchatbot?readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false';
@@ -20,9 +19,7 @@ mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-
 app.use(cors({origin:true,credentials: true}));
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -34,5 +31,5 @@ app.use('/asignaturas', asignatura);
 let port = 8080;
 
 app.listen(port, () => {
-    console.log('Servidor arriba!');
+    console.log('Chatbot BackEnd up!');
 });

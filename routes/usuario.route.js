@@ -6,8 +6,8 @@ const usuario_controller = require('../controllers/usuario.controller');
 
 
 // Prueba
-router.get('/nuevo', usuario_controller.usuario_nuevo);
+router.post('/nuevo', usuario_controller.usuario_nuevo);
 
-router.get('/asignaturaNuevo', usuario_controller.usuarioAsignatura_nuevo);
+router.post('/asignaturaNuevo', usuario_controller.usuarioAsignatura_nuevo);
 
 module.exports = router;
