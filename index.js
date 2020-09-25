@@ -18,6 +18,9 @@ mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+process.env.URLDB = mongoDB;
+process.env.CADUCIDAD_TOKEN = '48h';
+process.env.SEED_AUTENTICACION = process.env.SEED_AUTENTICACION ||  'este-es-el-seed-desarrollo';
 
 app.use(cors({origin:true,credentials: true}));
 app.use(bodyParser.json());
