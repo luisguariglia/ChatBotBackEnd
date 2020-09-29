@@ -51,14 +51,14 @@ exports.login = function (req, res) {
 
         Usuario.findOne({ cedula: req.body.cedula}, (erro, usuarioDB)=>{
               if (erro) {
-               return res.status(500).json({
+               return res.json({
                   ok: false,
                   err: erro
                })
             }
         // Verifica que exista un usuario con el mail escrita por el usuario.
            if (!usuarioDB.cedula) {
-              return res.status(400).json({
+              return res.json({
                 ok: false,
                 err: {
                     message: "Usuario o contraseña incorrectos"
@@ -73,13 +73,13 @@ exports.login = function (req, res) {
                 }, process.env.SEED_AUTENTICACION, {
                 expiresIn: process.env.CADUCIDAD_TOKEN
             })
-          return res.status(400).json({
+          return res.json({
              ok: true,
              usuario: usuarioDB,
              token,
           });
         }else {
-            return res.status(400).json({
+            return res.json({
                ok: false,
                err: {
                  message: "Usuario o contraseña incorrectos"
