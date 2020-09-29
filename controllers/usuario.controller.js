@@ -57,7 +57,7 @@ exports.login = function (req, res) {
                })
             }
         // Verifica que exista un usuario con el mail escrita por el usuario.
-           if (!usuarioDB.cedula) {
+           if (!usuarioDB) {
               return res.json({
                 ok: false,
                 err: {
@@ -73,6 +73,7 @@ exports.login = function (req, res) {
                 }, process.env.SEED_AUTENTICACION, {
                 expiresIn: process.env.CADUCIDAD_TOKEN
             })
+         // res.json({data:'Error no hay usuarios'});
           return res.json({
              ok: true,
              usuario: usuarioDB,
