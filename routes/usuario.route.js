@@ -14,4 +14,12 @@ router.post('/login', usuario_controller.login);
 
 router.post('/listado', usuario_controller.usuario_listado);
 
+router.post('/detalle', usuario_controller.usuario_details);
+
+router.post('/update', usuario_controller.usuario_update);
+
+router.post('/delete', usuario_controller.usuario_delete);
+
+router.get('/updatePassword', usuario_controller.usuario_updatePassword);
+
 module.exports = router;

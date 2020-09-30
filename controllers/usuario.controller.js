@@ -101,3 +101,65 @@ exports.usuario_listado = function (req, res) {
          res.json({data:users});
       });
 };
+
+exports.usuario_update = function (req, res) {
+
+  Usuario.findByIdAndUpdate(req.body.id,{cedula: req.body.cedula, nombre: req.body.nombre, apellido: req.body.apellido, contrasenia: bcrypt.hashSync(req.body.contrasenia, 10)},function(err,usuario){
+      if(err){
+          console.log(err);
+          res.json({data:'Error al modificar el usuario'});
+      }
+      Usuario.findById(req.body.id, function (err, user) {
+          if (err) {
+          	console.log(err);
+  	            res.json({data:'Error el usuario no existe'});
+          }
+          res.json({data:'Usuario modificado con exito', usuario: user});
+      })
+  })
+};
+
+exports.usuario_details = function (req, res) {
+
+    Usuario.findById(req.body.id, function (err, user) {
+        if (err) {
+        	console.log(err);
+	            res.json({data:'Error el usuario no existe'});
+        }
+        res.json({usuario: user});
+    })
+};
+
+exports.usuario_delete = function(req,res){
+    Usuario.findByIdAndRemove(req.body.id,function(err,user){
+        if(err){
+            console.log(err);
+            res.json({data:'Error el usuario no existe'});
+        }
+        res.json({data:'Usuario eliminado con exito'});
+    })
+};
+
+exports.usuario_updatePassword = function (req, res) {
+
+    Usuario.findById(req.body.id, function (err, user) {
+        if (err) {
+        	console.log(err);
+	            res.json({data:'Error el usuario no existe'});
+        }
+        bcrypt.compare(req.body.actual, user.contrasenia).then(function(result) {
+          if(result){
+            Usuario.findByIdAndUpdate(req.body.id,{contrasenia: bcrypt.hashSync(req.body.contrasenia, 10)},function(err,usuario){
+                if(err){
+                    console.log(err);
+                    res.json({data:'Error al modificar la contraseña'});
+                }else{
+                  res.json({data:'Contraseña actualizada con exito'});
+                }
+            })
+          }else{
+            res.json({data:'La contraseña actual es incorrecta'});
+          }
+        });
+    })
+};
