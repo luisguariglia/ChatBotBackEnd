@@ -20,6 +20,8 @@ router.post('/update', usuario_controller.usuario_update);
 
 router.post('/delete', usuario_controller.usuario_delete);
 
-router.get('/updatePassword', usuario_controller.usuario_updatePassword);
+router.post('/updatePassword', usuario_controller.usuario_updatePassword);
+
+router.post('/verify', usuario_controller.usuario_verify);
 
 module.exports = router;

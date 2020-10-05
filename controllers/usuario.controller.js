@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 var Request = require("request");
 const Usuario = require('../models/usuario.model');
 const UsuarioAsignatura = require('../models/usuarioAsignatura.model');
+const Asignatura = require('../models/asignatura.model');
 
 exports.usuario_nuevo = function (req, res) {
 
@@ -28,23 +29,58 @@ exports.usuario_nuevo = function (req, res) {
         })
 };
 
-exports.usuarioAsignatura_nuevo = function (req, res) {
+  exports.usuarioAsignatura_nuevo = function (req, res) {
 
-          var usuarioAsignatura = new UsuarioAsignatura(
-            {
-              _id: new mongoose.Types.ObjectId(),
-              estado: req.body.estado
-            }
+    Usuario.findById(req.body.idUser, function (err, user) {
+    if (err) {
+      console.log(err);
+          res.json({data:'Error el usuario no existe'});
+    }
+
+      Asignatura.findById(req.body.idAsig, function (err, asig) {
+      if (err) {
+        console.log(err);
+            res.json({data:'Error la asignatura no existe'});
+      }
+
+        var usuarioAsignatura = new UsuarioAsignatura(
+          {
+            _id: new mongoose.Types.ObjectId(),
+            estado: req.body.estado,
+            usuario: user,
+            asignatura: asig
+          }
         );
 
         usuarioAsignatura.save(function (err) {
-            if (err) {
-                console.log(err);
-                res.json({data:'Error'});
-            }
-        res.json({data:'usuarioAsignatura agregado con éxito'});
+          if (err) {
+              console.log(err);
+              res.json({data:'Error'});
+          }
 
-        })
+          Usuario.findOneAndUpdate(
+           { _id: req.body.idUser },
+           { $push: { usuarioAsignaturas: usuarioAsignatura  } },
+          function (error, success) {
+                if (error) {
+                    console.log(error);
+                    res.json({data:'Error user'});
+                }
+
+                Asignatura.findOneAndUpdate(
+                 { _id: req.body.idAsig },
+                 { $push: { usuarioAsignaturas: usuarioAsignatura  } },
+                function (error, success) {
+                      if (error) {
+                          console.log(error);
+                          res.json({data:'Error asig'});
+                      }
+                res.json({data:'usuarioAsignatura agregado con éxito'});
+                });
+            });
+      })
+    })
+  })
 };
 
 exports.login = function (req, res) {
@@ -104,7 +140,7 @@ exports.usuario_listado = function (req, res) {
 
 exports.usuario_update = function (req, res) {
 
-  Usuario.findByIdAndUpdate(req.body.id,{cedula: req.body.cedula, nombre: req.body.nombre, apellido: req.body.apellido, contrasenia: bcrypt.hashSync(req.body.contrasenia, 10)},function(err,usuario){
+  Usuario.findByIdAndUpdate(req.body.id,{cedula: req.body.cedula, nombre: req.body.nombre, apellido: req.body.apellido},function(err,usuario){
       if(err){
           console.log(err);
           res.json({data:'Error al modificar el usuario'});
@@ -163,3 +199,72 @@ exports.usuario_updatePassword = function (req, res) {
         });
     })
 };
+
+exports.usuario_verify = function (req, res) {
+
+    Usuario.findById(req.body.id, function (err, user) {
+        if (err) {
+        	console.log(err);
+	            res.json({data:'Error el usuario no existe'});
+        }
+        if (user.admin) {
+          res.json({data: true});
+        }else{
+          res.json({data: false});
+        }
+    })
+};
+/*
+exports.usuarioAsignatura_nuevo2 = function (req, res) {
+
+                Usuario.findById("5f6a4b92d0deb636ac12fb0f", function (err, user) {
+                if (err) {
+                  console.log(err);
+                      res.json({data:'Error el usuario no existe'});
+                }
+
+                Asignatura.findById("5f7b7ff3c8761b1448d939e1", function (err, asig) {
+                if (err) {
+                  console.log(err);
+                      res.json({data:'Error la asignatura no existe'});
+                }
+
+                  var usuarioAsignatura = new UsuarioAsignatura(
+                    {
+                      _id: new mongoose.Types.ObjectId(),
+                      estado: "Exonerada",
+                      usuario: user,
+                      asignatura: asig
+                    }
+                  );
+
+                  usuarioAsignatura.save(function (err) {
+                    if (err) {
+                        console.log(err);
+                        res.json({data:'Error'});
+                    }
+
+                    Usuario.findOneAndUpdate(
+                     { _id: "5f6a4b92d0deb636ac12fb0f" },
+                     { $push: { usuarioAsignaturas: usuarioAsignatura  } },
+                    function (error, success) {
+                          if (error) {
+                              console.log(error);
+                              res.json({data:'Error user'});
+                          }
+
+                          Asignatura.findOneAndUpdate(
+                           { _id: "5f7b7ff3c8761b1448d939e1" },
+                           { $push: { usuarioAsignaturas: usuarioAsignatura  } },
+                          function (error, success) {
+                                if (error) {
+                                    console.log(error);
+                                    res.json({data:'Error asig'});
+                                }
+                          res.json({data:'usuarioAsignatura agregado con éxito'});
+                          });
+                      });
+                })
+              })
+        })
+};*/

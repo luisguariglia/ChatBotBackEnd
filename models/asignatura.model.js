@@ -5,12 +5,12 @@ var AsignaturaSchema = new Schema({
 	_id: mongoose.Schema.Types.ObjectId,
 	codigo: {type: String, required: true, max: 200},
 	nombre: {type: String, required: true, max: 200},
-	creditos: {type: Number, required: true, min: 6, max:50},
+	creditos: {type: Number, required: true},
 	programa: {type: String, required: true, max: 200},
 	apruebaPor: {type:String, enum: ['Parciales','Laboratorios','Defensas','Obligatorios','Exámen']},
 	nombreDoc: {type: String, required: true, max: 200},
 	correoDoc: {type: String, required: true, max: 200, match: /.+\@.+\..+/},
-	fechaInscripción: {type: Date, required: true},
+	fechaInscripcion: {type: Date, required: true},
 	usuarioAsignaturas:[
 			{
 					 type: Schema.Types.ObjectId,
