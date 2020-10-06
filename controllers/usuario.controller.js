@@ -166,16 +166,6 @@ exports.usuario_details = function (req, res) {
     })
 };
 
-exports.usuario_delete = function(req,res){
-    Usuario.findByIdAndRemove(req.body.id,function(err,user){
-        if(err){
-            console.log(err);
-            res.json({data:'Error el usuario no existe'});
-        }
-        res.json({data:'Usuario eliminado con exito'});
-    })
-};
-
 exports.usuario_updatePassword = function (req, res) {
 
     Usuario.findById(req.body.id, function (err, user) {
@@ -213,6 +203,51 @@ exports.usuario_verify = function (req, res) {
           res.json({data: false});
         }
     })
+};
+
+exports.usuario_delete = function(req,res){
+
+        Usuario.findById(req.body.id, function (err, user) {
+          if (err) {
+            console.log(err);
+                res.json({data:'Error el usuario no existe'});
+          }
+          for (var i = 0; i < user.usuarioAsignaturas.length; i++) {
+            UsuarioAsignatura.findById(user.usuarioAsignaturas[i]._id, function (err, uA) {
+                if (err) {
+                	console.log(err);
+        	            res.json({data:'Error el usuario no existe'});
+                }
+                Asignatura.findById(uA.asignatura._id, function (err, asig) {
+                  if (err) {
+                    console.log(err);
+                        res.json({data:'Error el usuario no existe'});
+                  }
+                  asig.usuarioAsignaturas.pull({ _id: uA._id });
+                    Asignatura.findByIdAndUpdate(asig._id,{usuarioAsignaturas: asig.usuarioAsignaturas},function(err,asignatura){
+                        if(err){
+                            console.log(err);
+                            res.json({data:'Error al eliminar el usuario'});
+                        }
+                    })
+                      UsuarioAsignatura.findByIdAndRemove(uA._id,function(err,uAdel){
+                          if(err){
+                              console.log(err);
+                              res.json({data:'Error el usuario no existe'});
+                          }
+                          Usuario.findByIdAndRemove(req.body.id,function(err,uAdel){
+                              if(err){
+                                  console.log(err);
+                                  res.json({data:'Error el usuario no existe'});
+                              }
+                              res.json({data:'Usuario eliminado con exito'});
+                          })
+                      })
+                  })
+                })
+            }
+
+        })
 };
 /*
 exports.usuarioAsignatura_nuevo2 = function (req, res) {
