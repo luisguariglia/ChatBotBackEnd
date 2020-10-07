@@ -104,7 +104,7 @@ exports.usuario_listado = function (req, res) {
 
 exports.usuario_update = function (req, res) {
 
-  Usuario.findByIdAndUpdate(req.body.id,{cedula: req.body.cedula, nombre: req.body.nombre, apellido: req.body.apellido, contrasenia: bcrypt.hashSync(req.body.contrasenia, 10)},function(err,usuario){
+  Usuario.findByIdAndUpdate(req.body.id,{cedula: req.body.cedula, nombre: req.body.nombre, apellido: req.body.apellido},function(err,usuario){
       if(err){
           console.log(err);
           res.json({data:'Error al modificar el usuario'});
