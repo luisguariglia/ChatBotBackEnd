@@ -20,4 +20,12 @@ router.post('/nuevoExamen', asignatura_controller.asignatura_nuevoExamen);
 
 router.post('/nuevoLaboratorio', asignatura_controller.asignatura_nuevoLaboratorio);
 
+router.post('/listado', asignatura_controller.asignatura_listado);
+
+router.post('/detalle', asignatura_controller.asignatura_details);
+
+router.post('/update', asignatura_controller.asignatura_update);
+
+router.post('/delete', asignatura_controller.asignatura_delete);
+
 module.exports = router;
