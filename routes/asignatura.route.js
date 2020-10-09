@@ -28,4 +28,10 @@ router.post('/update', asignatura_controller.asignatura_update);
 
 router.post('/delete', asignatura_controller.asignatura_delete);
 
+router.post('/deleteHorario', asignatura_controller.asignatura_deleteHorario);
+
+router.post('/updateHorario', asignatura_controller.asignatura_updateHorario);
+
+router.post('/deletePrevia', asignatura_controller.asignatura_deletePrevia);
+
 module.exports = router;

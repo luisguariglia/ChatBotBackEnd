@@ -6,7 +6,7 @@ var AsignaturaSchema = new Schema({
 	codigo: {type: String, required: true, max: 200},
 	nombre: {type: String, required: true, max: 200},
 	creditos: {type: Number, required: true},
-	programa: {type: String, required: true, max: 200},
+	programa: {type: String, max: 200},
 	apruebaPor: {type:String, enum: ['Parciales','Laboratorios','Defensas','Obligatorios','Exámen']},
 	nombreDoc: {type: String, required: true, max: 200},
 	correoDoc: {type: String, required: true, max: 200, match: /.+\@.+\..+/},
