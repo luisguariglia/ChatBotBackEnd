@@ -51,14 +51,18 @@ exports.pregunta_FAQcal1 = async function (req, res) {
                     console.log(err);
                         res.json({data:'Error el usuario no existe'});
                   }
-                  resolve(uA.asignatura.creditos);
+                  if (uA.estado == "Exonerada") {
+                    resolve(uA.asignatura.creditos);
+                  }else{
+                    resolve(0);
+                  }
               })
 
             });
         };
         suma += await myPromise();
       }
-      res.json({data:'La cantidad de creditos que ha obtenido es de: '+suma});
+      res.json({data:'Tienes '+suma+' créditos obtenidos!'});
   })
 };
 
@@ -78,7 +82,11 @@ exports.pregunta_FAQcal2 = async function (req, res) {
                     console.log(err);
                         res.json({data:'Error el usuario no existe'});
                   }
-                  resolve(uA.asignatura.creditos);
+                  if (uA.estado == "Exonerada") {
+                    resolve(uA.asignatura.creditos);
+                  }else{
+                    resolve(0);
+                  }
               })
 
             });

@@ -36,24 +36,77 @@ exports.asignatura_nueva = function (req, res) {
 
 exports.asignatura_nuevaPrevia = function (req, res) {
 
+        Asignatura.findById(req.body.idAsigPrevia, function (err, asig) {
+          if (err) {
+            console.log(err);
+                res.json({data:'Error la asignatura previa no existe'});
+          }
+
           var previa = new Previa(
-            {
-              _id: new mongoose.Types.ObjectId(),
-              tipo: req.body.tipo
-            }
-        );
+              {
+                _id: new mongoose.Types.ObjectId(),
+                tipo: req.body.tipo,
+                asignatura: asig
+              }
+          );
 
-        previa.save(function (err) {
-            if (err) {
-                console.log(err);
-                res.json({data:'Error'});
-            }
-        res.json({data:'Previa agregada con éxito'});
+          previa.save(function (err) {
+              if (err) {
+                  console.log(err);
+                  res.json({data:'Error'});
+              }
 
+                Asignatura.findOneAndUpdate(
+                 { _id: req.body.idAsig },
+                 { $push: { previas: previa  } },
+                 function (error, success) {
+                       if (error) {
+                          console.log(error);
+                          res.json({data:'Error asig'});
+                       }
+                 res.json({data:'Previa agregado con éxito'});
+              });
+           })
         })
 };
 
+exports.asignatura_deletePrevia = function (req, res) {
+
+  Previa.findById(req.body.id, function (err, prev) {
+      if (err) {
+        console.log(err);
+            res.json({data:'Error la previa no existe'});
+      }
+    Asignatura.findById(req.body.idAsig, function (err, asig) {
+      if (err) {
+        console.log(err);
+            res.json({data:'Error la asignatura no existe'});
+      }
+            asig.previas.pull({ _id: prev._id });
+        Asignatura.findByIdAndUpdate(asig._id,{previas: asig.previas},function(err,asignatura){
+          if(err){
+              console.log(err);
+              res.json({data:'Error al eliminar la previa'});
+          }
+          Previa.findByIdAndRemove(req.body.id,function(err,pdel){
+            if(err){
+                console.log(err);
+                res.json({data:'Error la previa no existe'});
+            }
+            res.json({data:'Previa eliminada con exito'});
+        })
+      })
+    })
+  })
+};
+
 exports.asignatura_nuevoHorario = function (req, res) {
+
+          Asignatura.findById(req.body.idAsig, function (err, asig) {
+          if (err) {
+            console.log(err);
+                res.json({data:'Error la asignatura no existe'});
+          }
 
           var horario = new Horario(
             {
@@ -62,17 +115,74 @@ exports.asignatura_nuevoHorario = function (req, res) {
               dia: req.body.dia,
               horaDesde: req.body.horaDesde,
               horaHasta: req.body.horaHasta,
+              asignatura: asig
             }
-        );
-
-        horario.save(function (err) {
+          );
+            horario.save(function (err) {
             if (err) {
                 console.log(err);
                 res.json({data:'Error'});
             }
-        res.json({data:'Horario agregado con éxito'});
 
+            Asignatura.findOneAndUpdate(
+             { _id: req.body.idAsig },
+             { $push: { horarios: horario  } },
+            function (error, success) {
+                  if (error) {
+                      console.log(error);
+                      res.json({data:'Error asig'});
+                  }
+            res.json({data:'Horario agregado con éxito'});
+          });
+         })
         })
+};
+
+exports.asignatura_updateHorario = function (req, res) {
+
+  Horario.findByIdAndUpdate(req.body.id,{semestre: req.body.semestre, dia: req.body.dia, horaDesde: req.body.horaDesde, horaHasta: req.body.horaHasta},function(err,horario){
+      if(err){
+          console.log(err);
+          res.json({data:'Error al modificar el horario'});
+      }
+      Horario.findById(req.body.id, function (err, hora) {
+          if (err) {
+          	console.log(err);
+  	            res.json({data:'Error el horario no existe'});
+          }
+          res.json({data:'Horario modificado con exito', horario: hora});
+      })
+  })
+};
+
+exports.asignatura_deleteHorario = function (req, res) {
+
+  Horario.findById(req.body.id, function (err, hora) {
+      if (err) {
+        console.log(err);
+            res.json({data:'Error el horario no existe'});
+      }
+    Asignatura.findById(hora.asignatura._id, function (err, asig) {
+      if (err) {
+        console.log(err);
+            res.json({data:'Error la asignatura no existe'});
+      }
+            asig.horarios.pull({ _id: hora._id });
+        Asignatura.findByIdAndUpdate(asig._id,{horarios: asig.horarios},function(err,asignatura){
+          if(err){
+              console.log(err);
+              res.json({data:'Error al eliminar el horario'});
+          }
+        Horario.findByIdAndRemove(req.body.id,function(err,hdel){
+            if(err){
+                console.log(err);
+                res.json({data:'Error el horario no existe'});
+            }
+            res.json({data:'Horario eliminado con exito'});
+        })
+      })
+    })
+  })
 };
 
 exports.asignatura_nuevaEvaluacion = function (req, res) {
@@ -97,7 +207,7 @@ exports.asignatura_nuevaEvaluacion = function (req, res) {
 
 exports.asignatura_nuevoParcial = function (req, res) {
 
-          var parcial = new Parcial(
+        var parcial = new Parcial(
             {
               _id: new mongoose.Types.ObjectId()
             }
