@@ -9,24 +9,18 @@ var EvaluacionSchema = new Schema({
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Asignatura'
 	},
-	parciales:[
-			{
-					 type: Schema.Types.ObjectId,
-					 ref: "Parcial"
-			}
-	],
-	examenes:[
-			{
-					 type: Schema.Types.ObjectId,
-					 ref: "Examen"
-			}
-	],
-	laboratorios:[
-			{
-					 type: Schema.Types.ObjectId,
-					 ref: "Laboratorio"
-			}
-	]
+	parcial: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Parcial'
+	},
+	examen: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Examen'
+	},
+	laboratorio: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Laboratorio'
+	}
 });
 
 EvaluacionSchema.set('toJSON', {getters: true});

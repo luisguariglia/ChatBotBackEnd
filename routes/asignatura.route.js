@@ -32,6 +32,8 @@ router.post('/deleteHorario', asignatura_controller.asignatura_deleteHorario);
 
 router.post('/updateHorario', asignatura_controller.asignatura_updateHorario);
 
+router.post('/detalleHorario', asignatura_controller.asignatura_detalleHorario);
+
 router.post('/deletePrevia', asignatura_controller.asignatura_deletePrevia);
 
 module.exports = router;

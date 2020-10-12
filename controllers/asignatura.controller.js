@@ -302,6 +302,17 @@ exports.asignatura_details = function (req, res) {
     })
 };
 
+exports.asignatura_detalleHorario = function (req, res) {
+
+    Horario.findById(req.body.id, function (err, hor) {
+        if (err) {
+        	console.log(err);
+	            res.json({data:'Error el horario no existe'});
+        }
+        res.json({horario: hor});
+    })
+};
+
 exports.asignatura_delete = function(req,res){
     Asignatura.findByIdAndRemove(req.body.id,function(err,asig){
         if(err){
@@ -311,31 +322,3 @@ exports.asignatura_delete = function(req,res){
         res.json({data:'Asignatura eliminada con exito'});
     })
 };
-
-/*
-exports.asignatura_nueva2 = function (req, res) {
-
-          var asignatura = new Asignatura(
-            {
-              _id: new mongoose.Types.ObjectId(),
-              codigo: "mdl2",
-              nombre: "discreta 2",
-              creditos: "2",
-              programa: "/prog/aqui2.pdf",
-              apruebaPor: "Defensas",
-              nombreDoc: "Fernando2",
-              correoDoc: "Fernando2@gmail.com",
-              fechaInscripción: Date()
-            }
-        );
-
-        asignatura.save(function (err) {
-            if (err) {
-                console.log(err);
-                res.json({data:'Error'});
-            }
-        res.json({data:'Asignatura agregada con éxito'});
-
-        })
-};
-*/
