@@ -13,5 +13,5 @@ var LaboratorioSchema = new Schema({
 
 LaboratorioSchema.set('toJSON', {getters: true});
 
-// Export the model
+// Export the modelo
 module.exports = mongoose.model('Laboratorio', LaboratorioSchema);

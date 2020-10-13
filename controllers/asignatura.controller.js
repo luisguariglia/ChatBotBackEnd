@@ -442,3 +442,5 @@ exports.asignatura_delete = function(req,res){
         res.json({data:'Asignatura eliminada con exito'});
     })
 };
+
+//comentario
