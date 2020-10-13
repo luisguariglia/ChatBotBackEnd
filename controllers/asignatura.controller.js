@@ -185,80 +185,200 @@ exports.asignatura_deleteHorario = function (req, res) {
   })
 };
 
+exports.asignatura_deleteEvaluacion = function (req, res) {
+
+  Evaluacion.findById(req.body.id, function (err, ev) {
+      if (err) {
+        console.log(err);
+            res.json({data:'Error la evaluacion no existe'});
+      }
+    Asignatura.findById(ev.asignatura._id, function (err, asig) {
+      if (err) {
+        console.log(err);
+            res.json({data:'Error la asignatura no existe'});
+      }
+            asig.evaluaciones.pull({ _id: ev._id });
+        Asignatura.findByIdAndUpdate(asig._id,{evaluaciones: asig.evaluaciones},function(err,asignatura){
+          if(err){
+              console.log(err);
+              res.json({data:'Error al eliminar la evaluacion'});
+          }
+          if (req.body.tipo == "Parcial") {
+            Parcial.findByIdAndRemove(ev.parcial._id,function(err,edel){
+                if(err){
+                    console.log(err);
+                    res.json({data:'Error la evaluacion no existe'});
+                }
+            })
+          }else if (req.body.tipo == "Examen") {
+            Examen.findByIdAndRemove(ev.examen._id,function(err,edel){
+                if(err){
+                    console.log(err);
+                    res.json({data:'Error la evaluacion no existe'});
+                }
+            })
+          }else {
+            Laboratorio.findByIdAndRemove(ev.laboratorio._id,function(err,edel){
+                if(err){
+                    console.log(err);
+                    res.json({data:'Error la evaluacion no existe'});
+                }
+            })
+          }
+        Evaluacion.findByIdAndRemove(req.body.id,function(err,edel){
+            if(err){
+                console.log(err);
+                res.json({data:'Error la evaluacion no existe'});
+            }
+            res.json({data:'Evaluacion eliminada con exito'});
+        })
+      })
+    })
+  })
+};
+
 exports.asignatura_nuevaEvaluacion = function (req, res) {
 
-          var evaluacion = new Evaluacion(
-            {
-              _id: new mongoose.Types.ObjectId(),
-              nombre: req.body.nombre,
-              fecha: req.body.fecha
-            }
-        );
+        Asignatura.findById(req.body.idAsig, function (err, asig) {
+        if (err) {
+          console.log(err);
+              res.json({data:'Error la asignatura no existe'});
+        }
+          if (req.body.tipo == "Parcial") {
+            var parcial = new Parcial(
+                {
+                  _id: new mongoose.Types.ObjectId()
+                }
+            );
 
-        evaluacion.save(function (err) {
-            if (err) {
-                console.log(err);
-                res.json({data:'Error'});
-            }
-        res.json({data:'Evaluacion agregada con éxito'});
+            parcial.save(function (err) {
+                if (err) {
+                    console.log(err);
+                    res.json({data:'Error'});
+                }
 
+                var evaluacion = new Evaluacion(
+                    {
+                      _id: new mongoose.Types.ObjectId(),
+                      nombre: req.body.nombre,
+                      fecha: req.body.fecha,
+                      tipo: req.body.tipo,
+                      asignatura: asig,
+                      parcial: parcial
+                    }
+                );
+                evaluacion.save(function (err) {
+                    if (err) {
+                        console.log(err);
+                        res.json({data:'Error ev'});
+                    }
+                    Asignatura.findOneAndUpdate(
+                     { _id: req.body.idAsig },
+                     { $push: { evaluaciones: evaluacion  } },
+                    function (error, success) {
+                          if (error) {
+                              console.log(error);
+                              res.json({data:'Error asig'});
+                          }
+                    res.json({data:'Evaluacion agregada con éxito'});
+                  });
+                })
+            })
+          }else if (req.body.tipo == "Examen") {
+            var examen = new Examen(
+                {
+                  _id: new mongoose.Types.ObjectId()
+                }
+            );
+
+            examen.save(function (err) {
+                if (err) {
+                    console.log(err);
+                    res.json({data:'Error'});
+                }
+
+                var evaluacion = new Evaluacion(
+                    {
+                      _id: new mongoose.Types.ObjectId(),
+                      nombre: req.body.nombre,
+                      fecha: req.body.fecha,
+                      tipo: req.body.tipo,
+                      asignatura: asig,
+                      examen: examen
+                    }
+                );
+                evaluacion.save(function (err) {
+                    if (err) {
+                        console.log(err);
+                        res.json({data:'Error ev'});
+                    }
+                    Asignatura.findOneAndUpdate(
+                     { _id: req.body.idAsig },
+                     { $push: { evaluaciones: evaluacion  } },
+                    function (error, success) {
+                          if (error) {
+                              console.log(error);
+                              res.json({data:'Error asig'});
+                          }
+                    res.json({data:'Evaluacion agregada con éxito'});
+                    });
+                  })
+            })
+          }else {
+            var laboratorio = new Laboratorio(
+                {
+                  _id: new mongoose.Types.ObjectId(),
+                  fechaEntrega: req.body.fechaEntrega,
+                  fechaDefensa: req.body.fechaDefensa
+                }
+            );
+
+            laboratorio.save(function (err) {
+                if (err) {
+                    console.log(err);
+                    res.json({data:'Error'});
+                }
+
+                var evaluacion = new Evaluacion(
+                    {
+                      _id: new mongoose.Types.ObjectId(),
+                      nombre: req.body.nombre,
+                      fecha: req.body.fecha,
+                      tipo: req.body.tipo,
+                      asignatura: asig,
+                      laboratorio: laboratorio
+                    }
+                );
+                evaluacion.save(function (err) {
+                    if (err) {
+                        console.log(err);
+                        res.json({data:'Error ev'});
+                    }
+                    Asignatura.findOneAndUpdate(
+                     { _id: req.body.idAsig },
+                     { $push: { evaluaciones: evaluacion  } },
+                    function (error, success) {
+                          if (error) {
+                              console.log(error);
+                              res.json({data:'Error asig'});
+                          }
+                    res.json({data:'Evaluacion agregada con éxito'});
+                    });
+                  })
+            })
+          }
         })
 };
 
-exports.asignatura_nuevoParcial = function (req, res) {
+exports.asignatura_detalleEvaluacion = function (req, res) {
 
-        var parcial = new Parcial(
-            {
-              _id: new mongoose.Types.ObjectId()
-            }
-        );
-
-        parcial.save(function (err) {
-            if (err) {
-                console.log(err);
-                res.json({data:'Error'});
-            }
-        res.json({data:'Parcial agregado con éxito'});
-
-        })
-};
-
-exports.asignatura_nuevoExamen = function (req, res) {
-
-          var examen = new Examen(
-            {
-              _id: new mongoose.Types.ObjectId()
-            }
-        );
-
-        examen.save(function (err) {
-            if (err) {
-                console.log(err);
-                res.json({data:'Error'});
-            }
-        res.json({data:'Examen agregado con éxito'});
-
-        })
-};
-
-exports.asignatura_nuevoLaboratorio = function (req, res) {
-
-          var laboratorio = new Laboratorio(
-            {
-              _id: new mongoose.Types.ObjectId(),
-              fechaEntrega: req.body.fechaEntrega,
-              fechaDefensa: req.body.fechaDefensa
-            }
-        );
-
-        laboratorio.save(function (err) {
-            if (err) {
-                console.log(err);
-                res.json({data:'Error'});
-            }
-        res.json({data:'Laboratorio agregado con éxito'});
-
-        })
+    Evaluacion.findById(req.body.id, function (err, ev) {
+        if (err) {
+        	console.log(err);
+	            res.json({data:'Error la evaluacion no existe'});
+        }
+        res.json({evaluacion: ev});
+    })
 };
 
 exports.asignatura_listado = function (req, res) {
