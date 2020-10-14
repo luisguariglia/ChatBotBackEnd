@@ -235,17 +235,18 @@ exports.usuario_delete = function(req,res){
                               console.log(err);
                               res.json({data:'Error el usuario no existe'});
                           }
-                          Usuario.findByIdAndRemove(req.body.id,function(err,uAdel){
-                              if(err){
-                                  console.log(err);
-                                  res.json({data:'Error el usuario no existe'});
-                              }
-                              res.json({data:'Usuario eliminado con exito'});
-                          })
                       })
                   })
                 })
             }
+
+            Usuario.findByIdAndRemove(req.body.id,function(err,uAdel){
+                if(err){
+                    console.log(err);
+                    res.json({data:'Error el usuario no existe'});
+                }
+                res.json({data:'Usuario eliminado con exito'});
+            })
 
         })
 };

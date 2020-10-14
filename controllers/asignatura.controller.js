@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var Request = require("request");
 const Asignatura = require('../models/asignatura.model');
+const Usuario = require('../models/usuario.model');
+const UsuarioAsignatura = require('../models/usuarioAsignatura.model');
 const Previa = require('../models/previa.model');
 const Horario = require('../models/horario.model');
 const Evaluacion = require('../models/evaluacion.model');
@@ -434,13 +436,56 @@ exports.asignatura_detalleHorario = function (req, res) {
 };
 
 exports.asignatura_delete = function(req,res){
-    Asignatura.findByIdAndRemove(req.body.id,function(err,asig){
-        if(err){
+
+  Asignatura.findById(req.body.id, function (err, asig) {
+    if (err) {
+      console.log(err);
+          res.json({data:'Error la asignatura no existe'});
+    }
+    for (var i = 0; i < asig.usuarioAsignaturas.length; i++) {
+      UsuarioAsignatura.findById(asig.usuarioAsignaturas[i]._id, function (err, uA) {
+          if (err) {
             console.log(err);
-            res.json({data:'Error la asignatura no existe'});
+                res.json({data:'Error la asignatura no existe'});
+          }
+          Usuario.findById(uA.usuario._id, function (err, user) {
+            if (err) {
+              console.log(err);
+                  res.json({data:'Error el usuario no existe'});
+            }
+            user.usuarioAsignaturas.pull({ _id: uA._id });
+              Usuario.findByIdAndUpdate(user._id,{usuarioAsignaturas: user.usuarioAsignaturas},function(err,usuario){
+                  if(err){
+                      console.log(err);
+                      res.json({data:'Error al eliminar la asignatura'});
+                  }
+              })
+                UsuarioAsignatura.findByIdAndRemove(uA._id,function(err,uAdel){
+                    if(err){
+                        console.log(err);
+                        res.json({data:'Error el usuario no existe'});
+                    }
+
+                })
+            })
+          })
+      }
+      for (var j = 0; j < asig.horarios.length; j++) {
+        Horario.findByIdAndRemove(asig.horarios[j]._id, function (err, h) {
+            if (err) {
+              console.log(err);
+                  res.json({data:'Error la asignatura no existe'});
+                }
+            })
         }
-        res.json({data:'Asignatura eliminada con exito'});
-    })
+      Asignatura.findByIdAndRemove(req.body.id,function(err,uAdele){
+          if(err){
+              console.log(err);
+              res.json({data:'Error la asignatura no existe'});
+          }
+          res.json({data:'Asignatura eliminada con exito'});
+      })
+  })
 };
 
 //comentario
