@@ -24,4 +24,6 @@ router.post('/updatePassword', usuario_controller.usuario_updatePassword);
 
 router.post('/verify', usuario_controller.usuario_verify);
 
+router.post('/updateUA', usuario_controller.updateUA);
+
 module.exports = router;

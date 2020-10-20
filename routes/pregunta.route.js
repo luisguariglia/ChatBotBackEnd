@@ -15,4 +15,12 @@ router.post('/FAQcal1', pregunta_controller.pregunta_FAQcal1);
 
 router.post('/FAQcal2', pregunta_controller.pregunta_FAQcal2);
 
+router.post('/FAQcal3', pregunta_controller.pregunta_FAQcal3);
+
+router.post('/FAQcal4', pregunta_controller.pregunta_FAQcal4);
+
+router.post('/FAQcal5', pregunta_controller.pregunta_FAQcal5);
+
+router.post('/FAQcal7', pregunta_controller.pregunta_FAQcal7);
+
 module.exports = router;

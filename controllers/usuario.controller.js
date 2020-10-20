@@ -250,6 +250,23 @@ exports.usuario_delete = function(req,res){
 
         })
 };
+
+exports.updateUA = function (req, res) {
+
+    UsuarioAsignatura.findByIdAndUpdate(req.body.id,{estado: req.body.estado},function (err, uA) {
+        if (err) {
+          console.log(err);
+              res.json({data:'Error el usuario no existe'});
+        }
+        UsuarioAsignatura.findById(req.body.id, function (err, uAs) {
+            if (err) {
+              console.log(err);
+                  res.json({data:'Error el usuario no existe'});
+            }
+          res.json({data:'Modificado con exito', uA: uAs});
+    })
+  })
+};
 /*
 exports.usuarioAsignatura_nuevo2 = function (req, res) {
 
