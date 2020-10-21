@@ -8,24 +8,30 @@ const Asignatura = require('../models/asignatura.model');
 
 exports.usuario_nuevo = function (req, res) {
 
-          var usuario = new Usuario(
-            {
-              _id: new mongoose.Types.ObjectId(),
-              cedula: req.body.cedula,
-              nombre: req.body.nombre,
-              contrasenia: bcrypt.hashSync(req.body.contrasenia, 10),
-              apellido: req.body.apellido,
-              admin:req.body.admin
-            }
-        );
+          Usuario.findOne({ cedula: req.body.cedula}, (erro, usuarioDB)=>{
+                if (!usuarioDB) {
+                  var usuario = new Usuario(
+                    {
+                      _id: new mongoose.Types.ObjectId(),
+                      cedula: req.body.cedula,
+                      nombre: req.body.nombre,
+                      contrasenia: bcrypt.hashSync(req.body.contrasenia, 10),
+                      apellido: req.body.apellido,
+                      admin:req.body.admin
+                    }
+                );
 
-        usuario.save(function (err) {
-            if (err) {
-                console.log(err);
-                res.json({data:'Error'});
-            }
-        res.json({data:'Usuario agregado con éxito'});
+                usuario.save(function (err) {
+                    if (err) {
+                        console.log(err);
+                        res.json({data:'Error'});
+                    }
+                res.json({data:'Usuario agregado con éxito'});
 
+                })
+              }else{
+                res.json({data:'La cédula ya ha sido registrada'});
+              }
         })
 };
 
