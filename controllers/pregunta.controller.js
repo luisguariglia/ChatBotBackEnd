@@ -40,7 +40,7 @@ exports.pregunta_FAQcal1 = async function (req, res) {
 	Usuario.findById(req.body.id, async function (err, user) {
       if (err) {
         console.log(err);
-            res.json({data:'Error el usuario no existe'});
+            res.json({Reply:'Error el usuario no existe'});
       }
 
     var suma = 0;
@@ -50,7 +50,7 @@ exports.pregunta_FAQcal1 = async function (req, res) {
              UsuarioAsignatura.findById(item._id).populate('asignatura').exec( function (err, uA) {
                   if (err) {
                     console.log(err);
-                        res.json({data:'Error el usuario no existe'});
+                        res.json({Reply:'Error el usuario no existe'});
                   }
                   if (uA.estado == "Exonerada") {
                     resolve(uA.asignatura.creditos);
@@ -63,7 +63,7 @@ exports.pregunta_FAQcal1 = async function (req, res) {
         };
         suma += await myPromise();
       }
-      res.json({data:'Tienes '+suma+' créditos obtenidos!'});
+      res.json({Reply:'Tienes '+suma+' créditos obtenidos!'});
   })
 };
 
@@ -71,7 +71,7 @@ exports.pregunta_FAQcal2 = async function (req, res) {
 	Usuario.findById(req.body.id, async function (err, user) {
       if (err) {
         console.log(err);
-            res.json({data:'Error el usuario no existe'});
+            res.json({Reply:'Error el usuario no existe'});
       }
 
     var suma = 0;
@@ -81,7 +81,7 @@ exports.pregunta_FAQcal2 = async function (req, res) {
              UsuarioAsignatura.findById(item._id).populate('asignatura').exec( function (err, uA) {
                   if (err) {
                     console.log(err);
-                        res.json({data:'Error el usuario no existe'});
+                        res.json({Reply:'Error el usuario no existe'});
                   }
                   if (uA.estado == "Exonerada") {
                     resolve(uA.asignatura.creditos);
@@ -94,7 +94,7 @@ exports.pregunta_FAQcal2 = async function (req, res) {
         };
         suma += await myPromise();
       }
-      res.json({data:'La cantidad de creditos que le faltan para obtener el titulo es de: '+ (252-suma)});
+      res.json({Reply:'La cantidad de creditos que le faltan para obtener el titulo es de: '+ (252-suma)});
   })
 };
 
@@ -102,7 +102,7 @@ exports.pregunta_FAQcal3 = async function (req, res) {
 	Usuario.findById(req.body.id, async function (err, user) {
       if (err) {
         console.log(err);
-            res.json({data:'Error el usuario no existe'});
+            res.json({Reply:'Error el usuario no existe'});
       }
 
     var cont = 0;
@@ -112,7 +112,7 @@ exports.pregunta_FAQcal3 = async function (req, res) {
              UsuarioAsignatura.findById(item._id).populate('asignatura').exec( function (err, uA) {
                   if (err) {
                     console.log(err);
-                        res.json({data:'Error el usuario no existe'});
+                        res.json({Reply:'Error el usuario no existe'});
                   }
                   if (uA.estado == "Exonerada") {
                     if (uA.asignatura.codigo == "arq" || uA.asignatura.codigo == "so" || uA.asignatura.codigo == "red" ||
@@ -131,9 +131,9 @@ exports.pregunta_FAQcal3 = async function (req, res) {
         cont += await myPromise();
       }
       if (cont == 8) {
-        res.json({data:'Si, estás en condiciones de realizar la Pasantía Laboral'});
+        res.json({Reply:'Si, estás en condiciones de realizar la Pasantía Laboral'});
       }else{
-        res.json({data:'No, no estás en condiciones de realizar la Pasantía Laboral'});
+        res.json({Reply:'No, no estás en condiciones de realizar la Pasantía Laboral'});
       }
   })
 };
@@ -143,7 +143,7 @@ exports.pregunta_FAQcal4 = async function (req, res) {
 	Usuario.findById(req.body.id, async function (err, user) {
       if (err) {
         console.log(err);
-            res.json({data:'Error el usuario no existe'});
+            res.json({Reply:'Error el usuario no existe'});
       }
 
     var cont = 0;
@@ -153,7 +153,7 @@ exports.pregunta_FAQcal4 = async function (req, res) {
              UsuarioAsignatura.findById(item._id).populate('asignatura').exec( function (err, uA) {
                   if (err) {
                     console.log(err);
-                        res.json({data:'Error el usuario no existe'});
+                        res.json({Reply:'Error el usuario no existe'});
                   }
                   if (uA.estado == "Exonerada") {
                     if (uA.asignatura.codigo == "arq" || uA.asignatura.codigo == "so" || uA.asignatura.codigo == "adm1" ||
@@ -175,9 +175,9 @@ exports.pregunta_FAQcal4 = async function (req, res) {
         cont += await myPromise();
       }
       if (cont == 13) {
-        res.json({data:'Si, estás en condiciones de realizar el Proyecto Final'});
+        res.json({Reply:'Si, estás en condiciones de realizar el Proyecto Final'});
       }else{
-        res.json({data:'No, no estás en condiciones de realizar el Proyecto Final'});
+        res.json({Reply:'No, no estás en condiciones de realizar el Proyecto Final'});
       }
   })
 };
@@ -189,7 +189,7 @@ exports.pregunta_FAQcal5 = async function (req, res) {
     Feriado.find({}, async function(err, feriado) {
       if (err) {
         console.log(err);
-            res.json({data:'Error no hay feriados'});
+            res.json({Reply:'Error no hay feriados'});
     }
     var dev = "";
     var cont = 0;
@@ -208,9 +208,9 @@ exports.pregunta_FAQcal5 = async function (req, res) {
         dev += await myPromise();
       }
       if (cont == 1) {
-        res.json({data:'Mañana no hay clases debido al feriado de: '+dev});
+        res.json({Reply:'Mañana no hay clases debido al feriado de: '+dev});
       }else{
-        res.json({data:'Mañana hay clases!'});
+        res.json({Reply:'Mañana hay clases!'});
       }
   })
 };
@@ -222,7 +222,7 @@ exports.pregunta_FAQcal7 = async function (req, res) {
     Feriado.find({}, async function(err, feriado) {
       if (err) {
         console.log(err);
-            res.json({data:'Error no hay feriados'});
+            res.json({Reply:'Error no hay feriados'});
     }
     var dev = "";
     var cont = 0;
@@ -241,9 +241,9 @@ exports.pregunta_FAQcal7 = async function (req, res) {
         dev += await myPromise();
       }
       if (cont == 1) {
-        res.json({data:'Hoy no hay clases debido al feriado de: '+dev});
+        res.json({Reply:'Hoy no hay clases debido al feriado de: '+dev});
       }else{
-        res.json({data:'Hoy hay clases!'});
+        res.json({Reply:'Hoy hay clases!'});
       }
   })
 };
