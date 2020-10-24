@@ -284,6 +284,17 @@ exports.usuario_listadoUA = function (req, res) {
          res.json({data:usersA});
       });
 };
+
+exports.usuario_detalleUA = function (req, res) {
+
+    UsuarioAsignatura.findById(req.body.id, function (err, userA) {
+        if (err) {
+        	console.log(err);
+	            res.json({data:'Error el usuario no existe'});
+        }
+        res.json({usuarioAsignatura: userA});
+    })
+};
 /*
 exports.usuarioAsignatura_nuevo2 = function (req, res) {
 

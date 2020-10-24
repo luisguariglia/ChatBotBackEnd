@@ -28,4 +28,6 @@ router.post('/updateUA', usuario_controller.updateUA);
 
 router.post('/listadoUA', usuario_controller.usuario_listadoUA);
 
+router.post('/detalleUA', usuario_controller.usuario_detalleUA);
+
 module.exports = router;
