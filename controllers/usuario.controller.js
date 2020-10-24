@@ -273,6 +273,17 @@ exports.updateUA = function (req, res) {
     })
   })
 };
+
+exports.usuario_listadoUA = function (req, res) {
+
+    UsuarioAsignatura.find({}, function(err, usersA) {
+      if (err) {
+        console.log(err);
+            res.json({data:'Error no hay usuarios'});
+      }
+         res.json({data:usersA});
+      });
+};
 /*
 exports.usuarioAsignatura_nuevo2 = function (req, res) {
 

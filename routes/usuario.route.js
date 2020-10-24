@@ -26,4 +26,6 @@ router.post('/verify', usuario_controller.usuario_verify);
 
 router.post('/updateUA', usuario_controller.updateUA);
 
+router.post('/listadoUA', usuario_controller.usuario_listadoUA);
+
 module.exports = router;
