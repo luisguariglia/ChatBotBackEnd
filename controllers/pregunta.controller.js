@@ -5,6 +5,8 @@ const Usuario = require('../models/usuario.model');
 const UsuarioAsignatura = require('../models/usuarioAsignatura.model');
 const Asignatura = require('../models/asignatura.model');
 const Feriado = require('../models/feriado.model');
+const Previa = require('../models/previa.model');
+const Horario = require('../models/horario.model');
 
 exports.pregunta_nueva = function (req, res) {
 
@@ -245,5 +247,72 @@ exports.pregunta_FAQcal7 = async function (req, res) {
       }else{
         res.json({Reply:'Hoy hay clases!'});
       }
+  })
+};
+
+exports.pregunta_FAQcal8 = async function (req, res) {
+      Asignatura.findOne({ codigo: req.body.codigo}, async function (erro, asig){
+          if (erro) {
+            console.log(erro);
+                res.json({Reply:'Error la asignatura no existe'});
+          }
+          var cont = 0;
+          var cantPrevias = 0;
+           for (const previa of asig.previas) {
+             var myPromise = () => {
+               return new Promise((resolve, reject) => {
+                 Previa.findById(previa._id).populate('asignatura').exec( function (err, asigP) {
+                      if (err) {
+                        console.log(err);
+                            res.json({Reply:'Error la asignatura no existe'});
+                      }
+                       UsuarioAsignatura.find({ $and: [ {usuario: req.body.id}, {estado: "Exonerada"} ]}).populate('asignatura').exec( function (err, uA) {
+                            if (err) {
+                              console.log(err);
+                                  res.json({Reply:'Error el usuario no existe'});
+                            }
+                            uA.find(function(item){
+                              if(String(item.asignatura._id) == String(asigP.asignatura._id)){
+                                resolve(1);
+                              }
+                            });
+                            resolve(0);
+                      })
+                    })
+                  });
+              };
+              cantPrevias += 1;
+              cont += await myPromise();
+            }
+            if (cont == cantPrevias) {
+              res.json({Reply:'Si, estás en condiciones de realizar esta materia'});
+            }else{
+              res.json({Reply:'No, no estás en condiciones de realizar esta materia'});
+            }
+  })
+};
+
+exports.pregunta_FAQcal9 = async function (req, res) {
+      Asignatura.findOne({ codigo: req.body.codigo}, async function (erro, asig){
+          if (erro) {
+            console.log(erro);
+                res.json({Reply:'Error la asignatura no existe'});
+          }
+          var cont = "Los horarios de "+asig.nombre+" son: ";
+           for (const horario of asig.horarios) {
+             var myPromise = () => {
+               return new Promise((resolve, reject) => {
+                 Horario.findById(horario._id, function (err, asigH) {
+                      if (err) {
+                        console.log(err);
+                            res.json({Reply:'Error el horario no existe'});
+                      }
+                      resolve(asigH.dia+" desde: "+asigH.horaDesde+", hasta: "+asigH.horaHasta+" | ")
+                    })
+                  });
+              };
+              cont += await myPromise();
+            }
+    res.json({Reply:cont});
   })
 };
