@@ -7,6 +7,8 @@ const Asignatura = require('../models/asignatura.model');
 const Feriado = require('../models/feriado.model');
 const Previa = require('../models/previa.model');
 const Horario = require('../models/horario.model');
+const Evaluacion = require('../models/evaluacion.model');
+const Laboratorio = require('../models/laboratorio.model');
 
 exports.pregunta_nueva = function (req, res) {
 
@@ -308,6 +310,40 @@ exports.pregunta_FAQcal9 = async function (req, res) {
                             res.json({Reply:'Error el horario no existe'});
                       }
                       resolve(asigH.dia+" desde: "+asigH.horaDesde+", hasta: "+asigH.horaHasta+" | ")
+                    })
+                  });
+              };
+              cont += await myPromise();
+            }
+    res.json({Reply:cont});
+  })
+};
+
+exports.pregunta_FAQcal10 = async function (req, res) {
+      Asignatura.findOne({ codigo: req.body.codigo}, async function (erro, asig){
+          if (erro) {
+            console.log(erro);
+                res.json({Reply:'Error la asignatura no existe'});
+          }
+          var cont = "Las evaluaciones de "+asig.nombre+" son: ";
+           for (const ev of asig.evaluaciones) {
+             var myPromise = () => {
+               return new Promise((resolve, reject) => {
+                 Evaluacion.findById(ev._id, function (err, asigE) {
+                      if (err) {
+                        console.log(err);
+                            res.json({Reply:'Error la evaluacion no existe'});
+                      }
+                      var fecha = asigE.fecha.getDate() + "/" + (asigE.fecha.getMonth() +1);
+                      if (asigE.tipo == "Laboratorio") {
+                        Laboratorio.findById(asigE.laboratorio, function (err, lab) {
+                          var fechaE = lab.fechaEntrega.getDate() + "/" + (lab.fechaEntrega.getMonth() +1)
+                          var fechaD = lab.fechaDefensa.getDate() + "/" + (lab.fechaDefensa.getMonth() +1)
+                          resolve(asigE.tipo+": "+asigE.nombre+", Fecha de entrega: "+fechaE+", Fecha de defensa: "+fechaD+" | ")
+                        })
+                      }else {
+                        resolve(asigE.tipo+": "+asigE.nombre+", Fecha: "+fecha+" | ")
+                      }
                     })
                   });
               };

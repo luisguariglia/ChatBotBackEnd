@@ -49,42 +49,54 @@ exports.usuario_nuevo = function (req, res) {
             res.json({data:'Error la asignatura no existe'});
       }
 
-        var usuarioAsignatura = new UsuarioAsignatura(
-          {
-            _id: new mongoose.Types.ObjectId(),
-            estado: req.body.estado,
-            usuario: user,
-            asignatura: asig
-          }
-        );
+      UsuarioAsignatura.find({ $and: [ {usuario: req.body.idUser}, {asignatura: req.body.idAsig} ]}, function(err, usAsDB) {
 
-        usuarioAsignatura.save(function (err) {
-          if (err) {
-              console.log(err);
-              res.json({data:'Error'});
-          }
 
-          Usuario.findOneAndUpdate(
-           { _id: req.body.idUser },
-           { $push: { usuarioAsignaturas: usuarioAsignatura  } },
-          function (error, success) {
-                if (error) {
-                    console.log(error);
-                    res.json({data:'Error user'});
-                }
+          if (usAsDB[0] == undefined) {
 
-                Asignatura.findOneAndUpdate(
-                 { _id: req.body.idAsig },
-                 { $push: { usuarioAsignaturas: usuarioAsignatura  } },
-                function (error, success) {
-                      if (error) {
-                          console.log(error);
-                          res.json({data:'Error asig'});
-                      }
-                res.json({data:'usuarioAsignatura agregado con éxito'});
+            var usuarioAsignatura = new UsuarioAsignatura(
+              {
+                _id: new mongoose.Types.ObjectId(),
+                estado: req.body.estado,
+                usuario: user,
+                asignatura: asig
+              }
+            );
+
+            usuarioAsignatura.save(function (err) {
+              if (err) {
+                  console.log(err);
+                  res.json({data:'Error'});
+              }
+
+              Usuario.findOneAndUpdate(
+               { _id: req.body.idUser },
+               { $push: { usuarioAsignaturas: usuarioAsignatura  } },
+              function (error, success) {
+                    if (error) {
+                        console.log(error);
+                        res.json({data:'Error user'});
+                    }
+
+                    Asignatura.findOneAndUpdate(
+                     { _id: req.body.idAsig },
+                     { $push: { usuarioAsignaturas: usuarioAsignatura  } },
+                    function (error, success) {
+                          if (error) {
+                              console.log(error);
+                              res.json({data:'Error asig'});
+                          }
+                    res.json({data:'usuarioAsignatura agregado con éxito'});
+                    });
                 });
-            });
+          })
+
+          }else{
+            res.json({data:'Ya te has registrado a esta asignatura'});
+          }
+
       })
+
     })
   })
 };

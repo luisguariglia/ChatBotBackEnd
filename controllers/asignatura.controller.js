@@ -12,6 +12,8 @@ const Laboratorio = require('../models/laboratorio.model');
 
 exports.asignatura_nueva = function (req, res) {
 
+  Asignatura.findOne({ codigo: req.body.codigo}, (erro, asignaturaDB)=>{
+        if (!asignaturaDB) {
           var asignatura = new Asignatura(
             {
               _id: new mongoose.Types.ObjectId(),
@@ -34,6 +36,10 @@ exports.asignatura_nueva = function (req, res) {
         res.json({data:'Asignatura agregada con éxito'});
 
         })
+        }else{
+          res.json({data:'El código ya ha sido registrado'});
+        }
+  })
 };
 
 exports.asignatura_nuevaPrevia = function (req, res) {
