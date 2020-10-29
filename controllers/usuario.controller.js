@@ -307,57 +307,46 @@ exports.usuario_detalleUA = function (req, res) {
         res.json({usuarioAsignatura: userA});
     })
 };
-/*
-exports.usuarioAsignatura_nuevo2 = function (req, res) {
 
-                Usuario.findById("5f6a4b92d0deb636ac12fb0f", function (err, user) {
-                if (err) {
-                  console.log(err);
-                      res.json({data:'Error el usuario no existe'});
-                }
+exports.usuarioAsignatura_delete = function(req,res){
 
-                Asignatura.findById("5f7b7ff3c8761b1448d939e1", function (err, asig) {
-                if (err) {
-                  console.log(err);
-                      res.json({data:'Error la asignatura no existe'});
-                }
-
-                  var usuarioAsignatura = new UsuarioAsignatura(
-                    {
-                      _id: new mongoose.Types.ObjectId(),
-                      estado: "Exonerada",
-                      usuario: user,
-                      asignatura: asig
-                    }
-                  );
-
-                  usuarioAsignatura.save(function (err) {
-                    if (err) {
-                        console.log(err);
-                        res.json({data:'Error'});
-                    }
-
-                    Usuario.findOneAndUpdate(
-                     { _id: "5f6a4b92d0deb636ac12fb0f" },
-                     { $push: { usuarioAsignaturas: usuarioAsignatura  } },
-                    function (error, success) {
-                          if (error) {
-                              console.log(error);
-                              res.json({data:'Error user'});
-                          }
-
-                          Asignatura.findOneAndUpdate(
-                           { _id: "5f7b7ff3c8761b1448d939e1" },
-                           { $push: { usuarioAsignaturas: usuarioAsignatura  } },
-                          function (error, success) {
-                                if (error) {
-                                    console.log(error);
-                                    res.json({data:'Error asig'});
-                                }
-                          res.json({data:'usuarioAsignatura agregado con éxito'});
-                          });
-                      });
-                })
+  UsuarioAsignatura.findById(req.body.id, function (err, uA) {
+      if (err) {
+        console.log(err);
+            res.json({data:'Error la asignatura no existe'});
+      }
+      Usuario.findById(uA.usuario._id, function (err, user) {
+        if (err) {
+          console.log(err);
+              res.json({data:'Error el usuario no existe'});
+        }
+        Asignatura.findById(uA.asignatura._id, function (err, asig) {
+          if (err) {
+            console.log(err);
+                res.json({data:'Error el usuario no existe'});
+          }
+            user.usuarioAsignaturas.pull({ _id: uA._id });
+              Usuario.findByIdAndUpdate(user._id,{usuarioAsignaturas: user.usuarioAsignaturas},function(err,usuario){
+                  if(err){
+                      console.log(err);
+                      res.json({data:'Error al eliminar U'});
+                  }
               })
-        })
-};*/
+              asig.usuarioAsignaturas.pull({ _id: uA._id });
+                Asignatura.findByIdAndUpdate(asig._id,{usuarioAsignaturas: asig.usuarioAsignaturas},function(err,asignatura){
+                    if(err){
+                        console.log(err);
+                        res.json({data:'Error al eliminar A'});
+                    }
+                })
+                UsuarioAsignatura.findByIdAndRemove(uA._id,function(err,uAdel){
+                    if(err){
+                        console.log(err);
+                        res.json({data:'Error el usuarioA no existe'});
+                    }
+                    res.json({data:'Eliminado con exito'});
+                })
+      })
+    })
+  })
+};

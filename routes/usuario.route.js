@@ -30,4 +30,6 @@ router.post('/listadoUA', usuario_controller.usuario_listadoUA);
 
 router.post('/detalleUA', usuario_controller.usuario_detalleUA);
 
+router.post('/usuarioAsignaturaDelete', usuario_controller.usuarioAsignatura_delete);
+
 module.exports = router;
