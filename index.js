@@ -4,6 +4,7 @@ const pregunta = require('./routes/pregunta.route');
 const feriado = require('./routes/feriado.route');
 const usuario = require('./routes/usuario.route');
 const asignatura = require('./routes/asignatura.route');
+const planilla = require('./routes/planilla.route');
 
 var cors = require('cors')
 
@@ -30,6 +31,7 @@ app.use('/preguntas', pregunta);
 app.use('/feriados', feriado);
 app.use('/usuario', usuario);
 app.use('/asignaturas', asignatura);
+app.use('/planillas', planilla);
 
 let port = 8080;
 
