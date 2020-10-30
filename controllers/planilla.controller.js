@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var Request = require("request");
 const xlsxFile = require('read-excel-file/node');
 const fs = require('fs');
+const formidable = require('formidable');
 const Usuario = require('../models/usuario.model');
 const UsuarioAsignatura = require('../models/usuarioAsignatura.model');
 const Asignatura = require('../models/asignatura.model');
@@ -127,7 +128,21 @@ exports.alta_excel = async function(req,res){
 };
 
 exports.download_excel = function (req, res) {
-    var filePath = "./planillas/plantilla.xlsx"; // Or format the path using the `id` rest param
-    var fileName = "plantilla.xlsx"; // The default name the browser will use
+    var filePath = "./planillas/plantilla.xlsx";
+    var fileName = "plantilla.xlsx";
     res.download(filePath, fileName);
+};
+
+exports.upload_excel = function (req, res) {
+    var form = new formidable.IncomingForm();
+    form.parse(req, function (err, fields, files) {
+        var oldpath = files.filetoupload.path;
+        var newpath = './planillas/' + files.filetoupload.name;
+        fs.rename(oldpath, newpath, function (err) {
+          if (err){
+            res.json({data:'Error al subir el archivo'});
+          }
+          res.json({data:'Archivo subido!'});
+      });
+    });
 };
