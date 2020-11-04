@@ -352,3 +352,14 @@ exports.pregunta_FAQcal10 = async function (req, res) {
     res.json({Reply:cont});
   })
 };
+
+exports.pregunta_FAQcal11 = async function (req, res) {
+      Asignatura.findOne({ codigo: req.body.codigo}, async function (erro, asig){
+          if (erro) {
+            console.log(erro);
+                res.json({Reply:'Error la asignatura no existe'});
+          }
+          var cont = "Quien dicta la materia "+asig.nombre+" es: "+asig.nombreDoc+" y su correo electrónico es: "+asig.correoDoc;
+          res.json({Reply:cont});
+  })
+};

@@ -12,6 +12,6 @@ router.post('/alta', planilla_controller.alta_excel);
 
 router.get('/download', planilla_controller.download_excel);
 
-router.get('/upload', planilla_controller.upload_excel);
+router.post('/upload', planilla_controller.upload_excel);
 
 module.exports = router;
