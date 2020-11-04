@@ -45,11 +45,11 @@ exports.alta_excel = async function(req,res){
 
                         Usuario.findOne({ cedula: rows[i][2]}, (erro, usuarioDB)=>{
                              if (!usuarioDB) {
-                               res.json({data:'El usuario'+rows[i][2]+'no existe'});
+                               res.json({data:'El usuario '+rows[i][2]+' no existe'});
                              }else {
                                Asignatura.findOne({ codigo: rows[i][0]}, (erro, asignaturaDB)=>{
                                      if (!asignaturaDB) {
-                                       res.json({data:'La asignatura'+rows[i][0]+'no existe'});
+                                       res.json({data:'La asignatura '+rows[i][0]+' no existe'});
                                      }else{
 
                                        UsuarioAsignatura.find({ $and: [ {usuario: usuarioDB._id}, {asignatura: asignaturaDB._id} ]}, function(err, usAsDB) {
@@ -137,7 +137,7 @@ exports.upload_excel = function (req, res) {
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
         var oldpath = files.filetoupload.path;
-        var newpath = './planillas/' + files.filetoupload.name;
+        var newpath = './planillas/' + "Data.xlsx";
         fs.rename(oldpath, newpath, function (err) {
           if (err){
             res.json({data:'Error al subir el archivo'});
