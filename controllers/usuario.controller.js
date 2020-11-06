@@ -53,7 +53,6 @@ exports.usuario_nuevo = function (req, res) {
 
 
           if (usAsDB[0] == undefined) {
-
             var usuarioAsignatura = new UsuarioAsignatura(
               {
                 _id: new mongoose.Types.ObjectId(),
