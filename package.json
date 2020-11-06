@@ -2,7 +2,7 @@
   "name": "chat-bot",
   "version": "0.0.0",
   "scripts": {
-    "start": "node index.js",
+    "start": "node index.js"
   },
   "private": true,
   "dependencies": {
