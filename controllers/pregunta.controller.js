@@ -62,7 +62,6 @@ exports.pregunta_FAQcal1 = async function (req, res) {
                     resolve(0);
                   }
               })
-
             });
         };
         suma += await myPromise();
