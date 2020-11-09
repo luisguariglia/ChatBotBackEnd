@@ -41,6 +41,7 @@ exports.pregunta_listado = function (req, res) {
 };
 
 exports.pregunta_FAQcal1 = async function (req, res) {
+  console.log(req.body.id);
 	Usuario.findById(req.body.id, async function (err, user) {
       if (err) {
         console.log(err);
@@ -56,6 +57,7 @@ exports.pregunta_FAQcal1 = async function (req, res) {
                     console.log(err);
                         res.json({Reply:'Error el usuario no existe'});
                   }
+                  console.log(uA);
                   if (uA.estado == "Exonerada") {
                     resolve(uA.asignatura.creditos);
                   }else{
