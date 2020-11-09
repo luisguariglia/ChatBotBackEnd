@@ -32,4 +32,6 @@ router.post('/detalleUA', usuario_controller.usuario_detalleUA);
 
 router.post('/usuarioAsignaturaDelete', usuario_controller.usuarioAsignatura_delete);
 
+router.get('/prueba', usuario_controller.prueba);
+
 module.exports = router;

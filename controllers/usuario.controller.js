@@ -307,7 +307,7 @@ exports.usuario_detalleUA = function (req, res) {
     })
 };
 exports.prueba = function (req, res) {
-      res.send("Prueba exitosa");
+  res.json({prueba: 'esto es una prueba'});
 };
 
 exports.usuarioAsignatura_delete = function(req,res){
