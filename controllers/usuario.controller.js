@@ -306,6 +306,9 @@ exports.usuario_detalleUA = function (req, res) {
         res.json({usuarioAsignatura: userA});
     })
 };
+exports.prueba = function (req, res) {
+      res.send("Prueba exitosa");
+};
 
 exports.usuarioAsignatura_delete = function(req,res){
 
