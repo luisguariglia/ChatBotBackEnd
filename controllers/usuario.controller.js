@@ -53,7 +53,6 @@ exports.usuario_nuevo = function (req, res) {
 
 
           if (usAsDB[0] == undefined) {
-
             var usuarioAsignatura = new UsuarioAsignatura(
               {
                 _id: new mongoose.Types.ObjectId(),
@@ -306,6 +305,9 @@ exports.usuario_detalleUA = function (req, res) {
         }
         res.json({usuarioAsignatura: userA});
     })
+};
+exports.prueba = function (req, res) {
+  res.json({prueba: 'esto es una prueba'});
 };
 
 exports.usuarioAsignatura_delete = function(req,res){

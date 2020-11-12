@@ -2,12 +2,7 @@
   "name": "chat-bot",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "start": "node index.js"
   },
   "private": true,
   "dependencies": {
@@ -22,6 +17,7 @@
     "mongoose": "^5.10.6",
     "popper.js": "^1.16.1",
     "read-excel-file": "^4.0.7",
+    "request": "^2.88.2",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
