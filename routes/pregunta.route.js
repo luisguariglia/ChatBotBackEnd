@@ -31,4 +31,8 @@ router.post('/FAQcal10', pregunta_controller.pregunta_FAQcal10);
 
 router.post('/FAQcal11', pregunta_controller.pregunta_FAQcal11);
 
+router.post('/FAQcal12', pregunta_controller.pregunta_FAQcal12);
+
+router.post('/FAQcal13', pregunta_controller.pregunta_FAQcal13);
+
 module.exports = router;

@@ -363,3 +363,26 @@ exports.pregunta_FAQcal11 = async function (req, res) {
           res.json({Reply:cont});
   })
 };
+
+exports.pregunta_FAQcal12 = async function (req, res) {
+      Asignatura.findOne({ codigo: req.body.codigo}, async function (erro, asig){
+          if (erro) {
+            console.log(erro);
+                res.json({Reply:'Error la asignatura no existe'});
+          }
+          var fecha = asig.fechaInscripcion.getDate() + "/" + (asig.fechaInscripcion.getMonth() +1)
+          var cont = "El límite de inscripción a esta asignatura es hasta el: "+fecha;
+          res.json({Reply:cont});
+  })
+};
+
+exports.pregunta_FAQcal13 = async function (req, res) {
+      Asignatura.findOne({ codigo: req.body.codigo}, async function (erro, asig){
+          if (erro) {
+            console.log(erro);
+                res.json({Reply:'Error la asignatura no existe'});
+          }
+          var cont = "La materia "+asig.nombre+" otorga: "+asig.creditos+" créditos.";
+          res.json({Reply:cont});
+  })
+};
