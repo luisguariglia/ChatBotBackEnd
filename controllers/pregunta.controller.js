@@ -310,7 +310,7 @@ exports.pregunta_FAQcal9 = async function (req, res) {
                         console.log(err);
                             res.json({Reply:'Error el horario no existe'});
                       }
-                      resolve(asigH.dia+" desde: "+asigH.horaDesde+", hasta: "+asigH.horaHasta+" | ")
+                      resolve(asigH.dia+" desde: "+asigH.horaDesde+", hasta: "+asigH.horaHasta+" <br>")
                     })
                   });
               };
@@ -340,10 +340,10 @@ exports.pregunta_FAQcal10 = async function (req, res) {
                         Laboratorio.findById(asigE.laboratorio, function (err, lab) {
                           var fechaE = lab.fechaEntrega.getDate() + "/" + (lab.fechaEntrega.getMonth() +1)
                           var fechaD = lab.fechaDefensa.getDate() + "/" + (lab.fechaDefensa.getMonth() +1)
-                          resolve(asigE.tipo+": "+asigE.nombre+", Fecha de entrega: "+fechaE+", Fecha de defensa: "+fechaD+" | ")
+                          resolve(asigE.tipo+": "+asigE.nombre+", Fecha de entrega: "+fechaE+", Fecha de defensa: "+fechaD+" <br>")
                         })
                       }else {
-                        resolve(asigE.tipo+": "+asigE.nombre+", Fecha: "+fecha+" | ")
+                        resolve(asigE.tipo+": "+asigE.nombre+", Fecha: "+fecha+"<br>")
                       }
                     })
                   });
